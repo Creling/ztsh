@@ -1,0 +1,43 @@
+{% extends "./base.html" %}
+ 
+{% block othercss %}
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block log %}{{ title }}{% endblock %}
+{% block username %}{{ username }}{% endblock %}
+{% block mainbody %}
+<section class="wrapper site-min-height">
+    <h3><i class="fa fa-angle-right"></i>使用说明 <i class="fa fa-desktop"></i></h3>
+    <div class="row mt">
+        <div class="form-panel">
+                <h4 class="mb" style="float:left;dispaly:block;">使用帮助</h4>
+                <br><br><br>
+                <ol>
+                    <li>下载反向shell客户端</li>
+                    <li>启动</li>
+                    <li>等待系统识别并将结果反馈</li>
+                </ol>
+                <h4 class="mb" style="float:left;dispaly:block;">Todo List</h4>
+                <br><br><br>
+                <ol>
+                        <li>服务器状态监测</li>
+                    </ol>
+            <div class="col-lg-12 row mt">
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+            <div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+
+<!--custom checkbox & radio-->
+<script src="/templates/Dashio/lib/form-component.js"></script>
+<script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> 
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "./base.html" %}
+ 
+{% block othercss %}
+<link href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block log %}{{ title }}{% endblock %}
+{% block username %}{{ username }}{% endblock %}
+ 
+ 
+{% block mainbody %}
+<section class="wrapper site-min-height">
+    <h3><i class="fa fa-angle-right"></i>反向Shell列表 <i class="fa fa-desktop"></i></h3>
+    <div class="row mt">
+        <div class="form-panel">
+            <div class="col-lg-12 row mt">
+                <div class="col-sm-6">
+                    <h4 class="mb" style="float:left;dispaly:block;">可用主机</h4>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+            <div>
+                <table id="logtable" class="table-striped dataTable table-advance table-hover" style="word-break:break-all;">
+                    <thead>
+                        <tr>
+                            <th style="width:30%;">IP</th>
+                            <th style="width:30%;">ID</th>
+                            <th style="width:40%;">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody id="log">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+
+<script type="text/javascript">
+$(function (){
+    $('#logtable').DataTable({
+        "scrollY": "670px",   
+        "scrollCollapse": true,
+        "paging": false,      
+        "bInfo": false,     
+        "oLanguage": {
+            "sZeroRecords": "暂无主机连接",
+            "sSearch": "filter by IP：",
+        },
+    });
+});
+</script>
+
+<script type="text/javascript">
+// 客户端websocket
+var socket;
+$(function init(){
+    var host = "ws://39.96.212.204:8080/ws/info/";
+    try{
+        socket = new WebSocket(host);
+        // 打开websocket
+        socket.onopen = function(){
+            console.log('Connected');
+            var ping = [];
+            nothing_important = JSON.stringify(ping);
+            socket.send(nothing_important);
+        };
+        // 监听接收服务端的消息
+        socket.onmessage = function(msg){
+            console.log(msg);
+            var table = $('#logtable').DataTable();
+            var log = eval(msg.data);
+            console.log(log)
+            var table = $('#logtable').DataTable().clear().draw();
+            for(i=0; i<log.length; ++i){
+                var IP = log[i][0];
+                var time_stamp = log[i][1];
+                var shell_link = '<a href="/revshell/shell/'+ IP + '" target="_blank" >连接</a>';
+                table.row.add([IP,time_stamp,shell_link]).draw(true);
+            }
+        }
+        // websocket关闭
+        socket.onclose = function(){
+            console.log('Lose Connection!');
+        }
+    }catch(ex){
+        console(ex);
+    }
+})
+
+window.onbeforeunload = function(event) {
+    console.log("关闭WebSocket连接！");
+    socket.close();
+}
+</script>
+
+<!--custom switch-->
+<script type="text/javascript" src="/templates/Dashio/lib/bootstrap-switch.js"></script>
+<!--custom tagsinput-->
+<script type="text/javascript" src="/templates/Dashio/lib/jquery.tagsinput.js"></script>
+<!--custom checkbox & radio-->
+<script type="text/javascript" src="/templates/Dashio/lib/form-component.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script> 
+{% endblock %}

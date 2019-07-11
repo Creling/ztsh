@@ -1,0 +1,43 @@
+{% extends "./base.html" %}
+
+{% block othercss %}
+<link rel="stylesheet" type="text/css" href="/templates/Dashio/lib/gritter/css/jquery.gritter.css" />
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block log %}{{ title }}{% endblock %}
+{% block username %}{{ username }}{% endblock %}
+
+{% block mainbody %}
+<section class="wrapper">
+    <h3><i class="fa fa-angle-right"></i> 主页 <i class="fa fa-home"></i></h3>
+    <div class="row mt">
+        <div class="col-lg-12">
+            <div class="content-panel">
+                <div style="width: 400px; height: 740px;">
+                    <div class="col-lg-12">
+                        <h3>欢迎使用</h3>
+                    </div>
+                </div>
+            </div>
+        </div>   
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script type="text/javascript" src="/templates/Dashio/lib/gritter/js/jquery.gritter.js"></script>
+<script type="text/javascript" src="/templates/Dashio/lib/gritter-conf.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+    var unique_id = $.gritter.add({
+        title: '欢迎来到反向shell管理平台!',
+        text: '在这里，你可以连接你的各个主机，无论他们是否拥有公网ip',
+        image: '/templates/extra/toolicon.png',
+        sticky: true,
+        time: '',
+        class_name: 'my-sticky-class'
+    });
+    return false;
+    });
+</script>
+{% endblock %}

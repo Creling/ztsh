@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="shortcut icon" href="/templates/favicon.ico">
+    <!-- Bootstrap core CSS -->
+    <link href="/templates/Dashio/lib/bootstrap/css/bootstrap.css" rel="stylesheet">
+    <!--external css-->
+    <link href="/templates/Dashio/lib/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <!-- Custom styles for this template -->
+    <link href="/templates/Dashio/css/style.css" rel="stylesheet">
+    <link href="/templates/Dashio/css/style-responsive.css" rel="stylesheet">
+    <link href="/templates/sweetalert2-8.13.0/src/sweetalert2.scss" rel="stylesheet">
+    {% block othercss %}{% endblock %}
+  </head>
+
+  <body>
+
+  <section id="container" >
+      <!-- **********************************************************************************************************************************************************
+      TOP BAR CONTENT & NOTIFICATIONS
+      *********************************************************************************************************************************************************** -->
+      <!--header start-->
+      <header class="header black-bg">
+              <div class="sidebar-toggle-box">
+                  <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
+              </div>
+            <!--logo start-->
+            <a href="/home" class="logo"><b>{% block log %}{% endblock %}</b></a>
+            <!--logo end-->
+            <div class="top-menu">
+                <ul class="nav pull-right top-menu">
+                    <li><a class="logout" href="#">退出服务器</a></li>
+                </ul>
+            </div>
+        </header>
+      <!--header end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN SIDEBAR MENU
+      *********************************************************************************************************************************************************** -->
+      <!--sidebar start-->
+      <aside>
+          <div id="sidebar"  class="nav-collapse ">
+              <!-- sidebar menu start-->
+              <ul class="sidebar-menu" id="nav-accordion">
+              
+                  <p class="centered"><a href="/home"><img src="/templates/Dashio/img/ui-sam.jpg" class="img-circle" width="60"></a></p>
+                  <h5 class="centered">{% block username %}{% endblock %},你好</h5>
+                  
+                  <li class="sub-menu">
+                      <a href="/revshell" >
+                          <i class="fa fa-calendar"></i>
+                          <span>反向Shell列表</span>
+                      </a>
+                  </li>
+                  <li class="sub-menu">
+                      <a href="/help">
+                          <i class="fa fa-book"></i>
+                          <span>使用说明</span>
+                      </a>
+                  </li>
+              </ul>
+              <!-- sidebar menu end-->
+          </div>
+      </aside>
+      <!--sidebar end-->
+      
+      <!-- **********************************************************************************************************************************************************
+      MAIN CONTENT
+      *********************************************************************************************************************************************************** -->
+      <!--main content start-->
+      <section id="main-content">
+      {% block mainbody %}{% endblock %}
+      </section>
+
+      <!--main content end-->
+      <!--footer start-->
+      <footer class="site-footer">
+          <div class="text-center">
+              2018 - lishouxian
+          </div>
+      </footer>
+      <!--footer end-->
+  </section>
+    <!-- js placed at the end of the document so the pages load faster -->
+    <script type="text/javascript" src="/templates/Dashio/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="/templates/Dashio/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script class="include" type="text/javascript" src="/templates/Dashio/lib/jquery.dcjqaccordion.2.7.js"></script>
+    <script type="text/javascript" src="/templates/Dashio/lib/jquery.scrollTo.min.js"></script>
+    <script src="/templates/Dashio/lib/jquery.nicescroll.js" type="text/javascript"></script>
+    <!--common script for all pages-->
+    <script type="text/javascript" src="/templates/Dashio/lib/common-scripts.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/7.29.2/sweetalert2.all.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

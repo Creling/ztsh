@@ -1,0 +1,152 @@
+{% extends "./base.html" %}
+ 
+{% block othercss %}
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.4/xterm.css">
+{% endblock %}
+{% block title %}{{ title }}{% endblock %}
+{% block log %}{{ title }}{% endblock %}
+{% block username %}{{ username }}{% endblock %}
+{% block mainbody %}
+<div id="terminal"></div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/xterm/3.14.4/xterm.js"></script>
+<script type="text/javascript">
+var cols = get_term_size().cols;
+var rows = get_term_size().rows;
+var term = new Terminal(
+    {
+    cols: cols,
+    rows: rows
+    });
+term.open(document.getElementById('terminal'));
+
+var sock;
+target = "ws://39.96.212.204:8080/ws/shell/" + getIP()
+sock = new WebSocket(target);
+sock.addEventListener('open', function () {
+    console.log("connection start!")
+    });
+
+sock.addEventListener('message', function (recv) {
+    var data = recv.data;
+    console.log(data)
+    console.log(data.length)
+    data = data.replace(/\n/g, '\r\n');
+    term.write(data)
+
+    });
+var message=new Array(); //输入信息
+
+
+$(function () {
+
+
+    function runFakeTerminal() {
+        if (term._initialized) {
+            return;
+        }
+
+        term._initialized = true;
+
+        term.prompt = () => {
+            if (sock.readyState == 1){
+            console.log("prompt");
+            sock.send(message.join('') + '\n');
+            message.length = 0;
+        }
+        };
+
+        term.writeln('');
+        term.writeln('');
+        term.writeln('');
+        term.writeln('');
+        term.writeln('Welcome to xterm.js');
+        term.writeln('This is a local terminal emulation, without a real terminal in the back-end.');
+        term.writeln('Type some keys and commands to play around.');
+        term.writeln('');
+        term.prompt();
+        /*
+        term.on('key', function(key, ev) {
+            const printable = !ev.altKey && !ev.altGraphKey && !ev.ctrlKey && !ev.metaKey;
+
+            if (ev.ctrlKey)
+            {
+                if (ev.keyCode == 67)
+                {
+                    sock.send("\x03");
+                    console.log("Ctrl+C");
+                }
+                if (ev.keyCode == 86)
+                {
+                    console.log("Ctrl+V");
+                }
+            }
+            else if (ev.keyCode == 27) //Esc键
+            {
+                sock.send("\033");
+            }
+            else if (ev.keyCode === 13) 
+            {
+                term.prompt();
+            } 
+            else if (ev.keyCode === 8) 
+            {
+                // Do not delete the prompt
+                if (term._core.buffer.x > 2) {
+                    term.write('\b \b');
+                    message.pop();
+                }
+            } 
+            else if (printable) {
+                message.push(key);
+                term.write(key);
+                console.log(ev.keyCode);
+            }        
+        });
+        */
+
+        term.on('data', function (data, ev) {
+            sock.send(data);
+            console.log(data);
+        });
+
+        term.on('paste', function(data) {
+            term.write(data);
+        });
+    }
+    runFakeTerminal();
+});
+
+function getIP()
+{
+　　　var url = document.location.toString();
+　　　var arrUrl = url.split("/");
+　　　var index = arrUrl.pop()
+　　　return index;
+　　}
+
+function get_term_size() 
+{
+    var init_width = 11;
+    var init_height = 18;
+    
+    var windows_width = $(window).width();
+    var windows_height = $(window).height();
+    
+    return {
+    cols: Math.floor(windows_width / init_width),
+    rows: Math.floor(windows_height / init_height),
+    }
+}
+
+</script>
+
+<!--custom switch-->
+<script type="text/javascript" src="/templates/Dashio/lib/bootstrap-switch.js"></script>
+<!--custom tagsinput-->
+<script type="text/javascript" src="/templates/Dashio/lib/jquery.tagsinput.js"></script>
+<!--custom checkbox & radio-->
+<script type="text/javascript" src="/templates/Dashio/lib/form-component.js"></script>
+<script type="text/javascript" src="/templates/extra"></script> 
+{% endblock %}
